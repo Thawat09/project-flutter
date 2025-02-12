@@ -16,6 +16,7 @@ class _AddPageState extends State<AddPage> {
   bool _isAmountValid = false;
   bool _isCategoryValid = false;
   bool _isFormValid = false;
+  String? _transactionType = 'income';
 
   void _checkFormValidity() {
     setState(() {
@@ -26,47 +27,42 @@ class _AddPageState extends State<AddPage> {
     });
   }
 
-  void _addTransaction() async {
+  Future<void> _addTransaction() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
-      print("user : $user");
       if (user != null) {
         await FirebaseFirestore.instance.collection('transactions').add({
           'amount': double.parse(_amountController.text),
           'category': _categoryController.text,
           'userId': user.uid,
           'timestamp': Timestamp.now(),
+          'type': _transactionType,
         });
 
-        // แสดง SnackBar เมื่อบันทึกข้อมูลสำเร็จ
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
               content: Text(
-            'Transaction added successfully!',
-            style: TextStyle(
-              fontFamily: 'DynaPuff',
-              fontSize: 20,
+                'Transaction added successfully!',
+                style: TextStyle(fontFamily: 'DynaPuff', fontSize: 20),
+              ),
             ),
-          )),
-        );
+          );
 
-        // นำทางไปยังหน้าจอ Dashboard
-        Navigator.pushReplacementNamed(context, '/dashboard');
+          Navigator.pushReplacementNamed(context, '/dashboard');
+        }
       }
     } catch (e) {
-      print('Error adding transaction: $e');
-
-      // แสดง SnackBar เมื่อเกิดข้อผิดพลาด
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
             content: Text(
-          'Failed to add transaction. Please try again.',
-          style: TextStyle(
-            fontFamily: 'DynaPuff',
-            fontSize: 20,
+              'Failed to add transaction. Please try again.',
+              style: TextStyle(fontFamily: 'DynaPuff', fontSize: 20),
+            ),
           ),
-        )),
-      );
+        );
+      }
     }
   }
 
@@ -95,32 +91,38 @@ class _AddPageState extends State<AddPage> {
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 labelText: 'Amount',
-                labelStyle: TextStyle(
-                  fontFamily: 'DynaPuff',
-                  fontSize: 20,
-                ),
+                labelStyle: TextStyle(fontFamily: 'DynaPuff', fontSize: 20),
               ),
-              onChanged: (value) {
-                _checkFormValidity();
-                if (value.isNotEmpty && double.tryParse(value) == null) {
-                  setState(() {
-                    _isAmountValid = false;
-                  });
-                }
-              },
+              onChanged: (value) => _checkFormValidity(),
             ),
             TextField(
               controller: _categoryController,
               decoration: const InputDecoration(
                 labelText: 'Category',
-                labelStyle: TextStyle(
-                  fontFamily: 'DynaPuff',
-                  fontSize: 20,
-                ),
+                labelStyle: TextStyle(fontFamily: 'DynaPuff', fontSize: 20),
               ),
-              onChanged: (value) {
-                _checkFormValidity();
+              onChanged: (value) => _checkFormValidity(),
+            ),
+            const SizedBox(height: 20),
+            DropdownButtonFormField<String>(
+              value: _transactionType,
+              decoration: const InputDecoration(
+                labelText: 'Transaction Type',
+                labelStyle: TextStyle(fontFamily: 'DynaPuff', fontSize: 20),
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _transactionType = newValue;
+                });
               },
+              items: <String>['income', 'expense']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value == 'income' ? 'Income' : 'Expense'),
+                );
+              }).toList(),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

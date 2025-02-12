@@ -33,6 +33,15 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
       backgroundColor: Colors.deepPurple,
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white70,
+      selectedLabelStyle: const TextStyle(
+        fontFamily: 'DynaPuff',
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedLabelStyle: const TextStyle(
+        fontFamily: 'DynaPuff',
+        fontSize: 18,
+      ),
       showSelectedLabels: true,
       showUnselectedLabels: true,
       iconSize: 20,

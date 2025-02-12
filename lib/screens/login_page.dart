@@ -20,7 +20,7 @@ class LoginPageState extends State<LoginPage> {
           .signInWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
 
-      if (userCredential.user != null) {
+      if (userCredential.user != null && mounted) {
         Navigator.pushReplacementNamed(context, '/dashboard');
       }
     } catch (e) {
@@ -62,6 +62,8 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 237, 237),
       body: Center(
@@ -81,7 +83,7 @@ class LoginPageState extends State<LoginPage> {
                   children: [
                     Icon(
                       Icons.flutter_dash,
-                      size: 250,
+                      size: screenWidth * 0.2,
                       color: Colors.deepPurple,
                     ),
                     _gap(),
@@ -92,7 +94,7 @@ class LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                           fontFamily: 'DynaPuff',
                           fontWeight: FontWeight.bold,
-                          fontSize: 40,
+                          fontSize: screenWidth * 0.05,
                         ),
                       ),
                     ),
@@ -204,7 +206,7 @@ class LoginPageState extends State<LoginPage> {
                         'Don\'t have an account? Register here',
                         style: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                       ),
                     ),

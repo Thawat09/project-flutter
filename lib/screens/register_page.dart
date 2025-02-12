@@ -65,6 +65,8 @@ class RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 237, 237),
       body: Center(
@@ -84,7 +86,7 @@ class RegisterPageState extends State<RegisterPage> {
                   children: [
                     Icon(
                       Icons.flutter_dash,
-                      size: 250,
+                      size: screenWidth * 0.5,
                       color: Colors.deepPurple,
                     ),
                     _gap(),
@@ -95,7 +97,7 @@ class RegisterPageState extends State<RegisterPage> {
                         style: TextStyle(
                           fontFamily: 'DynaPuff',
                           fontWeight: FontWeight.bold,
-                          fontSize: 40,
+                          fontSize: screenWidth * 0.1,
                         ),
                       ),
                     ),
