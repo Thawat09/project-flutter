@@ -32,11 +32,25 @@ class LoginPageState extends State<LoginPage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Error'),
+        title: const Text(
+          'Error',
+          style: TextStyle(
+            fontFamily: 'DynaPuff',
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
         content: Text(message),
         actions: <Widget>[
           TextButton(
-            child: const Text('OK'),
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                fontFamily: 'DynaPuff',
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -75,10 +89,11 @@ class LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
                         "Login for Project Flutter",
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: Colors.deepPurple,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 40,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -99,6 +114,14 @@ class LoginPageState extends State<LoginPage> {
                       decoration: const InputDecoration(
                         labelText: 'Email',
                         hintText: 'Enter your email',
+                        labelStyle: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 20,
+                        ),
+                        hintStyle: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 20,
+                        ),
                         prefixIcon: Icon(Icons.email_outlined),
                         border: OutlineInputBorder(),
                       ),
@@ -119,6 +142,14 @@ class LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         labelText: 'Password',
                         hintText: 'Enter your password',
+                        labelStyle: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 20,
+                        ),
+                        hintStyle: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 20,
+                        ),
                         prefixIcon: const Icon(Icons.lock_outline_rounded),
                         border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
@@ -155,9 +186,10 @@ class LoginPageState extends State<LoginPage> {
                           child: Text(
                             'Log In',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontFamily: 'DynaPuff',
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
+                              fontSize: 20,
                             ),
                           ),
                         ),
@@ -168,8 +200,13 @@ class LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/register');
                       },
-                      child:
-                          const Text('Don\'t have an account? Register here'),
+                      child: const Text(
+                        'Don\'t have an account? Register here',
+                        style: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
                   ],
                 ),

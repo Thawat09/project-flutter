@@ -20,3 +20,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/fonts/
+  fonts:
+    - family: DynaPuff
+      fonts:
+        - asset: assets/fonts/DynaPuff-Regular.ttf
+        - asset: assets/fonts/DynaPuff-Bold.ttf
+          weight: 700

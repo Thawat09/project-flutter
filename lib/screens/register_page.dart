@@ -33,11 +33,25 @@ class RegisterPageState extends State<RegisterPage> {
         showDialog(
           context: context,
           builder: (_) => AlertDialog(
-            title: const Text('Error'),
+            title: const Text(
+              'Error',
+              style: TextStyle(
+                fontFamily: 'DynaPuff',
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
             content: Text(e.toString()),
             actions: <Widget>[
               TextButton(
-                child: const Text('OK'),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(
+                    fontFamily: 'DynaPuff',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -78,10 +92,11 @@ class RegisterPageState extends State<RegisterPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
                         "Register for Project Flutter",
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: Colors.deepPurple,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 40,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -102,6 +117,14 @@ class RegisterPageState extends State<RegisterPage> {
                       decoration: const InputDecoration(
                         labelText: 'Email',
                         hintText: 'Enter your email',
+                        labelStyle: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 20,
+                        ),
+                        hintStyle: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 20,
+                        ),
                         prefixIcon: Icon(Icons.email_outlined),
                         border: OutlineInputBorder(),
                       ),
@@ -122,6 +145,14 @@ class RegisterPageState extends State<RegisterPage> {
                       decoration: InputDecoration(
                         labelText: 'Password',
                         hintText: 'Enter your password',
+                        labelStyle: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 20,
+                        ),
+                        hintStyle: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 20,
+                        ),
                         prefixIcon: const Icon(Icons.lock_outline_rounded),
                         border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
@@ -158,9 +189,10 @@ class RegisterPageState extends State<RegisterPage> {
                           child: Text(
                             'Register',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontFamily: 'DynaPuff',
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
+                              fontSize: 20,
                             ),
                           ),
                         ),
@@ -176,7 +208,12 @@ class RegisterPageState extends State<RegisterPage> {
                         );
                       },
                       child: const Text(
-                          'If you already have an account, go to the login page'),
+                        'If you already have an account, go to the login page',
+                        style: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 20,
+                        ),
+                      ),
                     ),
                   ],
                 ),

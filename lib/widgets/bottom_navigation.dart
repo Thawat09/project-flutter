@@ -19,7 +19,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
         Navigator.pushNamed(context, '/dashboard');
         break;
       case 1:
-        Navigator.pushNamed(context, '/add-edit');
+        Navigator.pushNamed(context, '/add');
         break;
       case 2:
         Navigator.pushNamed(context, '/settings');
@@ -43,7 +43,7 @@ class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.add),
-          label: 'Add/Edit',
+          label: 'Add',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings),
