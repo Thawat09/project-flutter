@@ -21,7 +21,7 @@ class ExpenseTrackerApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      initialRoute: '/login',
+      initialRoute: '/dashboard',
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
