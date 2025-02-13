@@ -52,7 +52,9 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _amountController.text = data['amount'].toString();
           _categoryController.text = data['category'];
-          _selectedDate = (data['timestamp'] as Timestamp).toDate();
+          _selectedDate = (data['timestamp'] as Timestamp)
+              .toDate()
+              .toUtc();
           _transactionType = data['type'];
           _selectedTime = TimeOfDay.fromDateTime(_selectedDate);
         });
@@ -108,7 +110,7 @@ class _EditPageState extends State<EditPage> {
         _selectedDate.day,
         _selectedTime.hour,
         _selectedTime.minute,
-      );
+      ).toUtc();
 
       await FirebaseFirestore.instance
           .collection('transactions')
@@ -209,8 +211,10 @@ class _EditPageState extends State<EditPage> {
                       value: _transactionType,
                       decoration: const InputDecoration(
                         labelText: 'Transaction Type',
-                        labelStyle:
-                            TextStyle(fontFamily: 'DynaPuff', fontSize: 16),
+                        labelStyle: TextStyle(
+                          fontFamily: 'DynaPuff',
+                          fontSize: 16,
+                        ),
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (String? newValue) {

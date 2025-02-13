@@ -70,7 +70,7 @@ class _AddPageState extends State<AddPage> {
           _selectedDate.day,
           _selectedTime.hour,
           _selectedTime.minute,
-        );
+        ).toUtc();
 
         await FirebaseFirestore.instance.collection('transactions').add({
           'amount': double.parse(_amountController.text),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_flutter/screens/change_password_page.dart';
+import 'package:project_flutter/screens/chart_page.dart';
 import 'package:project_flutter/screens/dashboard_page.dart';
 import 'package:project_flutter/screens/add_page.dart';
 import 'package:project_flutter/screens/detail_page.dart';
@@ -37,6 +38,19 @@ class RouteGenerator {
       case '/changepassword':
         return MaterialPageRoute(
           builder: (_) => const ChangePasswordPage(),
+        );
+      case '/chart':
+        final arguments = settings.arguments as Map<String, dynamic>;
+        final List<DocumentSnapshot> transactions = arguments['transactions'];
+        final DateTime startDate = arguments['startDate'];
+        final DateTime endDate = arguments['endDate'];
+
+        return MaterialPageRoute(
+          builder: (_) => ChartPage(
+            transactions: transactions,
+            startDate: startDate,
+            endDate: endDate,
+          ),
         );
       case '/login':
         return MaterialPageRoute(
