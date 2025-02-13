@@ -37,7 +37,7 @@ class LoginPageState extends State<LoginPage> {
           style: TextStyle(
             fontFamily: 'DynaPuff',
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 16,
           ),
         ),
         content: Text(message),
@@ -48,7 +48,7 @@ class LoginPageState extends State<LoginPage> {
               style: TextStyle(
                 fontFamily: 'DynaPuff',
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 16,
               ),
             ),
             onPressed: () {
@@ -118,11 +118,11 @@ class LoginPageState extends State<LoginPage> {
                         hintText: 'Enter your email',
                         labelStyle: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                         hintStyle: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                         prefixIcon: Icon(Icons.email_outlined),
                         border: OutlineInputBorder(),
@@ -146,11 +146,11 @@ class LoginPageState extends State<LoginPage> {
                         hintText: 'Enter your password',
                         labelStyle: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                         hintStyle: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                         prefixIcon: const Icon(Icons.lock_outline_rounded),
                         border: const OutlineInputBorder(),
@@ -191,7 +191,7 @@ class LoginPageState extends State<LoginPage> {
                               fontFamily: 'DynaPuff',
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontSize: 20,
+                              fontSize: 16,
                             ),
                           ),
                         ),
@@ -206,7 +206,7 @@ class LoginPageState extends State<LoginPage> {
                         'Don\'t have an account? Register here',
                         style: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 16,
+                          fontSize: 12,
                         ),
                       ),
                     ),

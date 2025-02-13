@@ -38,7 +38,7 @@ class RegisterPageState extends State<RegisterPage> {
               style: TextStyle(
                 fontFamily: 'DynaPuff',
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 16,
               ),
             ),
             content: Text(e.toString()),
@@ -49,7 +49,7 @@ class RegisterPageState extends State<RegisterPage> {
                   style: TextStyle(
                     fontFamily: 'DynaPuff',
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 16,
                   ),
                 ),
                 onPressed: () {
@@ -86,7 +86,7 @@ class RegisterPageState extends State<RegisterPage> {
                   children: [
                     Icon(
                       Icons.flutter_dash,
-                      size: screenWidth * 0.5,
+                      size: screenWidth * 0.2,
                       color: Colors.deepPurple,
                     ),
                     _gap(),
@@ -97,7 +97,7 @@ class RegisterPageState extends State<RegisterPage> {
                         style: TextStyle(
                           fontFamily: 'DynaPuff',
                           fontWeight: FontWeight.bold,
-                          fontSize: screenWidth * 0.1,
+                          fontSize: screenWidth * 0.05,
                         ),
                       ),
                     ),
@@ -121,11 +121,11 @@ class RegisterPageState extends State<RegisterPage> {
                         hintText: 'Enter your email',
                         labelStyle: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                         hintStyle: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                         prefixIcon: Icon(Icons.email_outlined),
                         border: OutlineInputBorder(),
@@ -149,11 +149,11 @@ class RegisterPageState extends State<RegisterPage> {
                         hintText: 'Enter your password',
                         labelStyle: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                         hintStyle: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 20,
+                          fontSize: 16,
                         ),
                         prefixIcon: const Icon(Icons.lock_outline_rounded),
                         border: const OutlineInputBorder(),
@@ -194,7 +194,7 @@ class RegisterPageState extends State<RegisterPage> {
                               fontFamily: 'DynaPuff',
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
-                              fontSize: 20,
+                              fontSize: 16,
                             ),
                           ),
                         ),
@@ -203,17 +203,13 @@ class RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                        );
+                        Navigator.pushNamed(context, '/login');
                       },
                       child: const Text(
-                        'If you already have an account, go to the login page',
+                        'Already have an account? Login',
                         style: TextStyle(
                           fontFamily: 'DynaPuff',
-                          fontSize: 20,
+                          fontSize: 12,
                         ),
                       ),
                     ),
