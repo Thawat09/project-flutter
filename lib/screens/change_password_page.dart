@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:project_flutter/helpers/theme_helper.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -18,8 +18,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool _isNewPasswordValid = false;
   bool _isDarkMode = false;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -28,7 +26,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   void initState() {
     super.initState();
-    _loadThemeFromFirestore();
+    _loadTheme();
     _newPasswordController.addListener(_validatePasswords);
     _confirmPasswordController.addListener(_validatePasswords);
   }
@@ -105,17 +103,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     }
   }
 
-  Future<void> _loadThemeFromFirestore() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc =
-          await _firestore.collection('users').doc(user.uid).get();
-      if (userDoc.exists) {
-        setState(() {
-          _isDarkMode = userDoc['isDarkMode'] ?? false;
-        });
-      }
-    }
+  Future<void> _loadTheme() async {
+    bool storedTheme = await loadThemeFromLocalStorage();
+    setState(() {
+      _isDarkMode = storedTheme;
+    });
   }
 
   void _showErrorSnackBar(String message) {
@@ -123,7 +115,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       SnackBar(
         content: Text(
           message,
-          style: const TextStyle(fontFamily: 'DynaPuff', fontSize: 16),
+          style: const TextStyle(
+            fontFamily: 'DynaPuff',
+            fontSize: 16,
+          ),
         ),
         backgroundColor: Colors.red,
       ),

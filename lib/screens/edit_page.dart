@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:project_flutter/helpers/theme_helper.dart';
 import 'package:project_flutter/widgets/bottom_navigation.dart';
 
 class EditPage extends StatefulWidget {
@@ -28,23 +28,15 @@ class _EditPageState extends State<EditPage> {
   @override
   void initState() {
     super.initState();
-    _loadThemeFromFirestore();
+    _loadTheme();
     _loadTransactionData();
   }
 
-  Future<void> _loadThemeFromFirestore() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-      if (userDoc.exists) {
-        setState(() {
-          _isDarkMode = userDoc['isDarkMode'] ?? false;
-        });
-      }
-    }
+  Future<void> _loadTheme() async {
+    bool storedTheme = await loadThemeFromLocalStorage();
+    setState(() {
+      _isDarkMode = storedTheme;
+    });
   }
 
   Future<void> _loadTransactionData() async {
@@ -66,17 +58,20 @@ class _EditPageState extends State<EditPage> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Failed to load transaction data. Please try again.',
-            style: TextStyle(
-              fontFamily: 'DynaPuff',
-              fontSize: 16,
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Failed to load transaction data. Please try again.',
+              style: TextStyle(
+                fontFamily: 'DynaPuff',
+                fontSize: 16,
+              ),
             ),
+            backgroundColor: Colors.red,
           ),
-        ),
-      );
+        );
+      }
     } finally {
       setState(() => _isLoading = false);
     }
@@ -135,6 +130,7 @@ class _EditPageState extends State<EditPage> {
                 fontSize: 16,
               ),
             ),
+            backgroundColor: Colors.green,
           ),
         );
         Navigator.pushReplacementNamed(context, '/dashboard');
@@ -150,6 +146,7 @@ class _EditPageState extends State<EditPage> {
                 fontSize: 16,
               ),
             ),
+            backgroundColor: Colors.red,
           ),
         );
       }

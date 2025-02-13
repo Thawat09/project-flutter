@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:project_flutter/helpers/theme_helper.dart';
 import 'package:intl/intl.dart';
 
 class DetailPage extends StatefulWidget {
@@ -14,26 +14,18 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   bool _isDarkMode = false;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
-    _loadThemeFromFirestore();
+    _loadTheme();
   }
 
-  Future<void> _loadThemeFromFirestore() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc =
-          await _firestore.collection('users').doc(user.uid).get();
-      if (userDoc.exists) {
-        setState(() {
-          _isDarkMode = userDoc['isDarkMode'] ?? false;
-        });
-      }
-    }
+  Future<void> _loadTheme() async {
+    bool storedTheme = await loadThemeFromLocalStorage();
+    setState(() {
+      _isDarkMode = storedTheme;
+    });
   }
 
   @override

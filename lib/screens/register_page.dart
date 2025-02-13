@@ -93,7 +93,7 @@ class RegisterPageState extends State<RegisterPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
-                        "Register for Project Flutter",
+                        "Register Project Flutter",
                         style: TextStyle(
                           fontFamily: 'DynaPuff',
                           fontWeight: FontWeight.bold,

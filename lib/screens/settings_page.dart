@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:project_flutter/helpers/theme_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_flutter/widgets/bottom_navigation.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -18,20 +20,19 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    _loadThemeFromFirestore();
+    _loadTheme();
   }
 
-  Future<void> _loadThemeFromFirestore() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc =
-          await _firestore.collection('users').doc(user.uid).get();
-      if (userDoc.exists) {
-        setState(() {
-          _isDarkMode = userDoc['isDarkMode'] ?? false;
-        });
-      }
-    }
+  Future<void> _loadTheme() async {
+    bool storedTheme = await loadThemeFromLocalStorage();
+    setState(() {
+      _isDarkMode = storedTheme;
+    });
+  }
+
+  Future<void> _saveThemeToLocalStorage(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkMode', value);
   }
 
   Future<void> _saveThemeToFirestore(bool value) async {
@@ -48,6 +49,7 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       _isDarkMode = value;
     });
+    _saveThemeToLocalStorage(value);
     _saveThemeToFirestore(value);
   }
 

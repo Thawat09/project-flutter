@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:project_flutter/helpers/theme_helper.dart';
 import 'package:project_flutter/widgets/bottom_navigation.dart';
 
 class AddPage extends StatefulWidget {
@@ -26,22 +27,14 @@ class _AddPageState extends State<AddPage> {
   @override
   void initState() {
     super.initState();
-    _loadThemeFromFirestore();
+    _loadTheme();
   }
 
-  Future<void> _loadThemeFromFirestore() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-      if (userDoc.exists) {
-        setState(() {
-          _isDarkMode = userDoc['isDarkMode'] ?? false;
-        });
-      }
-    }
+  Future<void> _loadTheme() async {
+    bool storedTheme = await loadThemeFromLocalStorage();
+    setState(() {
+      _isDarkMode = storedTheme;
+    });
   }
 
   void _checkFormValidity() {
@@ -97,6 +90,7 @@ class _AddPageState extends State<AddPage> {
                   fontSize: 16,
                 ),
               ),
+              backgroundColor: Colors.green,
             ),
           );
           Navigator.pushReplacementNamed(context, '/dashboard');
@@ -113,6 +107,7 @@ class _AddPageState extends State<AddPage> {
                 fontSize: 16,
               ),
             ),
+            backgroundColor: Colors.red,
           ),
         );
       }

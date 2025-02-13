@@ -10,21 +10,43 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   bool _isPasswordVisible = false;
+  bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> _login() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: _emailController.text, password: _passwordController.text);
 
       if (userCredential.user != null && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Login successful!",
+            style: TextStyle(
+              fontFamily: 'DynaPuff',
+              fontSize: 16,
+            ),
+          ),
+          backgroundColor: Colors.green,
+        ),
+      );
+      
         Navigator.pushReplacementNamed(context, '/dashboard');
       }
     } catch (e) {
       _showErrorDialog(e.toString());
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -90,7 +112,7 @@ class LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
-                        "Login for Project Flutter",
+                        "Login Project Flutter",
                         style: TextStyle(
                           fontFamily: 'DynaPuff',
                           fontWeight: FontWeight.bold,
@@ -178,23 +200,30 @@ class LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                        onPressed: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            _login();
-                          }
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            'Log In',
-                            style: TextStyle(
-                              fontFamily: 'DynaPuff',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
+                        onPressed: _isLoading
+                            ? null
+                            : () {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
+                                  _login();
+                                }
+                              },
+                        child: _isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Text(
+                                  'Log In',
+                                  style: TextStyle(
+                                    fontFamily: 'DynaPuff',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 10),

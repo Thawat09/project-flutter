@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:project_flutter/helpers/theme_helper.dart';
 import 'package:project_flutter/widgets/bottom_navigation.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -12,26 +13,18 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   bool _isDarkMode = false;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
-    _loadThemeFromFirestore();
+    _loadTheme();
   }
 
-  Future<void> _loadThemeFromFirestore() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      DocumentSnapshot userDoc =
-          await _firestore.collection('users').doc(user.uid).get();
-      if (userDoc.exists) {
-        setState(() {
-          _isDarkMode = userDoc['isDarkMode'] ?? false;
-        });
-      }
-    }
+  Future<void> _loadTheme() async {
+    bool storedTheme = await loadThemeFromLocalStorage();
+    setState(() {
+      _isDarkMode = storedTheme;
+    });
   }
 
   Future<void> _deleteTransaction(
@@ -47,13 +40,31 @@ class _DashboardPageState extends State<DashboardPage> {
             .delete();
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Transaction deleted successfully')),
+            const SnackBar(
+              content: Text(
+                'Transaction deleted successfully',
+                style: TextStyle(
+                  fontFamily: 'DynaPuff',
+                  fontSize: 16,
+                ),
+              ),
+              backgroundColor: Colors.green,
+            ),
           );
         }
       } catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to delete transaction')),
+            const SnackBar(
+              content: Text(
+                'Failed to delete transaction',
+                style: TextStyle(
+                  fontFamily: 'DynaPuff',
+                  fontSize: 16,
+                ),
+              ),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       }
@@ -173,7 +184,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       return Card(
                         elevation: 5,
                         margin: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 15),
+                            vertical: 5, horizontal: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
@@ -229,8 +240,10 @@ class _DashboardPageState extends State<DashboardPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.edit,
-                                      color: Colors.yellowAccent),
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.yellow[700],
+                                  ),
                                   onPressed: () {
                                     Navigator.pushNamed(
                                       context,
