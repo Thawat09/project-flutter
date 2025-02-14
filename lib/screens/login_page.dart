@@ -27,18 +27,18 @@ class LoginPageState extends State<LoginPage> {
 
       if (userCredential.user != null && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Login successful!",
-            style: TextStyle(
-              fontFamily: 'DynaPuff',
-              fontSize: 16,
+          const SnackBar(
+            content: Text(
+              "Login successful!",
+              style: TextStyle(
+                fontFamily: 'DynaPuff',
+                fontSize: 16,
+              ),
             ),
+            backgroundColor: Colors.green,
           ),
-          backgroundColor: Colors.green,
-        ),
-      );
-      
+        );
+
         Navigator.pushReplacementNamed(context, '/dashboard');
       }
     } catch (e) {

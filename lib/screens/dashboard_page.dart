@@ -24,8 +24,8 @@ class _DashboardPageState extends State<DashboardPage> {
   DateTime _endDate = DateTime(
     DateTime.now().year,
     DateTime.now().month + 1,
-    0,
-  );
+    1,
+  ).subtract(Duration(milliseconds: 1));
   List<DocumentSnapshot> transactions = [];
 
   @override
@@ -253,47 +253,57 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             if (_isFilterVisible) ...[
               const SizedBox(height: 8),
-              Row(
+              Column(
                 children: [
-                  Expanded(
-                    child: _buildDateFilterRow(
-                      'Start Date',
-                      _startDate,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildDateFilterRow(
+                          'Start Date',
+                          _startDate,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: _buildDateFilterRow(
+                          'End Date',
+                          _endDate,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: _buildDateFilterRow(
-                      'End Date',
-                      _endDate,
-                    ),
+                  const SizedBox(
+                      height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: _applyFilter,
+                        child: const Text(
+                          'Apply Filter',
+                          style: TextStyle(
+                            fontFamily: 'DynaPuff',
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          _applyFilterAndNavigateToChart(context);
+                        },
+                        child: const Text(
+                          'View Chart',
+                          style: TextStyle(
+                            fontFamily: 'DynaPuff',
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _applyFilter,
-                child: const Text(
-                  'Apply Filter',
-                  style: TextStyle(
-                    fontFamily: 'DynaPuff',
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _applyFilterAndNavigateToChart(context);
-                },
-                child: const Text(
-                  'View Chart',
-                  style: TextStyle(
-                    fontFamily: 'DynaPuff',
-                    fontSize: 16,
-                  ),
-                ),
-              ),
+              )
             ],
           ],
         ),

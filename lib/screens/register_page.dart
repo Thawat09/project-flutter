@@ -11,11 +11,16 @@ class RegisterPage extends StatefulWidget {
 
 class RegisterPageState extends State<RegisterPage> {
   bool _isPasswordVisible = false;
+  bool _isLoading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> _register() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text,
@@ -23,6 +28,19 @@ class RegisterPageState extends State<RegisterPage> {
       );
 
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Register successful!",
+              style: TextStyle(
+                fontFamily: 'DynaPuff',
+                fontSize: 16,
+              ),
+            ),
+            backgroundColor: Colors.green,
+          ),
+        );
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -60,6 +78,10 @@ class RegisterPageState extends State<RegisterPage> {
           ),
         );
       }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -181,23 +203,30 @@ class RegisterPageState extends State<RegisterPage> {
                             borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                        onPressed: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            _register();
-                          }
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            'Register',
-                            style: TextStyle(
-                              fontFamily: 'DynaPuff',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
+                        onPressed: _isLoading
+                            ? null
+                            : () {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
+                                  _register();
+                                }
+                              },
+                        child: _isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Padding(
+                                padding: EdgeInsets.all(10.0),
+                                child: Text(
+                                  'Register',
+                                  style: TextStyle(
+                                    fontFamily: 'DynaPuff',
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 10),
