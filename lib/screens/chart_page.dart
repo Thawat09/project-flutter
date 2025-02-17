@@ -10,11 +10,11 @@ class ChartPage extends StatefulWidget {
   final DateTime endDate;
 
   const ChartPage({
-    Key? key,
+    super.key,
     required this.transactions,
     required this.startDate,
     required this.endDate,
-  }) : super(key: key);
+  });
 
   @override
   _ChartPageState createState() => _ChartPageState();
