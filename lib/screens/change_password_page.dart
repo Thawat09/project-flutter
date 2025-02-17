@@ -59,6 +59,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   }
 
   Future<void> _changePassword() async {
+    if (!_isNewPasswordValid || !_isPasswordMatch) {
+      _showErrorSnackBar("Please make sure all fields are valid.");
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
@@ -144,85 +149,86 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
+          child: ListView(
             children: [
-              TextFormField(
+              _buildAnimatedFormField(
                 controller: _oldPasswordController,
-                obscureText: !_isOldPasswordVisible,
-                decoration: InputDecoration(
-                  labelText: "Old Password",
-                  labelStyle: TextStyle(
-                    fontFamily: 'DynaPuff',
-                    fontSize: 16,
-                  ),
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                    icon: Icon(_isOldPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                    onPressed: () => _togglePasswordVisibility('old'),
-                  ),
-                ),
+                label: "Old Password",
+                isPasswordVisible: _isOldPasswordVisible,
+                onToggleVisibility: () => _togglePasswordVisibility('old'),
+                isObscured: !_isOldPasswordVisible,
               ),
               const SizedBox(height: 10),
-              TextFormField(
+              _buildAnimatedFormField(
                 controller: _newPasswordController,
-                obscureText: !_isNewPasswordVisible,
-                decoration: InputDecoration(
-                  labelText: "New Password (min 6 characters)",
-                  labelStyle: TextStyle(
-                    fontFamily: 'DynaPuff',
-                    fontSize: 16,
-                  ),
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                    icon: Icon(_isNewPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                    onPressed: () => _togglePasswordVisibility('new'),
-                  ),
-                ),
+                label: "New Password (min 6 characters)",
+                isPasswordVisible: _isNewPasswordVisible,
+                onToggleVisibility: () => _togglePasswordVisibility('new'),
+                isObscured: !_isNewPasswordVisible,
               ),
               const SizedBox(height: 10),
-              TextFormField(
+              _buildAnimatedFormField(
                 controller: _confirmPasswordController,
-                obscureText: !_isConfirmPasswordVisible,
-                decoration: InputDecoration(
-                  labelText: "Confirm New Password",
-                  labelStyle: TextStyle(
-                    fontFamily: 'DynaPuff',
-                    fontSize: 16,
-                  ),
-                  prefixIcon: const Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                    icon: Icon(_isConfirmPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off),
-                    onPressed: () => _togglePasswordVisibility('confirm'),
-                  ),
-                ),
+                label: "Confirm New Password",
+                isPasswordVisible: _isConfirmPasswordVisible,
+                onToggleVisibility: () => _togglePasswordVisibility('confirm'),
+                isObscured: !_isConfirmPasswordVisible,
               ),
               const SizedBox(height: 40),
-              ElevatedButton(
-                onPressed:
-                    (_isNewPasswordValid && _isPasswordMatch && !_isLoading)
-                        ? _changePassword
-                        : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
-                ),
-                child: _isLoading
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text(
-                        "Change Password",
-                        style: TextStyle(
-                          fontFamily: 'DynaPuff',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                child: ElevatedButton(
+                  key: ValueKey<bool>(_isLoading),
+                  onPressed:
+                      (_isNewPasswordValid && _isPasswordMatch && !_isLoading)
+                          ? _changePassword
+                          : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                  ),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          "Change Password",
+                          style: TextStyle(
+                            fontFamily: 'DynaPuff',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
+                ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAnimatedFormField({
+    required TextEditingController controller,
+    required String label,
+    required bool isPasswordVisible,
+    required VoidCallback onToggleVisibility,
+    required bool isObscured,
+  }) {
+    return AnimatedOpacity(
+      opacity: 1.0,
+      duration: const Duration(milliseconds: 500),
+      child: TextFormField(
+        controller: controller,
+        obscureText: isObscured,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(
+            fontFamily: 'DynaPuff',
+            fontSize: 16,
+          ),
+          prefixIcon: const Icon(Icons.lock_outline),
+          suffixIcon: IconButton(
+            icon: Icon(
+                isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+            onPressed: onToggleVisibility,
           ),
         ),
       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
-import 'package:project_flutter/helpers/theme_helper.dart'; // ไฟล์ helper สำหรับ Theme
+import 'package:project_flutter/helpers/theme_helper.dart';
 
 class ChartPage extends StatefulWidget {
   final List<DocumentSnapshot> transactions;
@@ -78,22 +78,29 @@ class _ChartPageState extends State<ChartPage> {
               )
             : Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Card(
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(
+                child: AnimatedContainer(
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.easeInOut,
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        spreadRadius: 4,
+                      ),
+                    ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        _buildDateRange(context),
-                        const SizedBox(height: 16),
-                        _buildSummaryTable(),
-                        const SizedBox(height: 20),
-                        _buildPieChart(),
-                      ],
-                    ),
+                  child: Column(
+                    children: [
+                      _buildDateRange(context),
+                      const SizedBox(height: 16),
+                      _buildSummaryTable(),
+                      const SizedBox(height: 20),
+                      _buildPieChart(),
+                    ],
                   ),
                 ),
               ),
@@ -170,37 +177,43 @@ class _ChartPageState extends State<ChartPage> {
   Widget _buildPieChart() {
     return SizedBox(
       height: 300,
-      child: PieChart(
-        PieChartData(
-          sections: [
-            PieChartSectionData(
-              value: incomeSum,
-              title: 'Income\n${incomeSum.toStringAsFixed(2)}',
-              color: Colors.green,
-              radius: 100,
-              titleStyle: const TextStyle(
-                fontFamily: 'DynaPuff',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+      child: TweenAnimationBuilder(
+        tween: Tween<double>(begin: 0, end: incomeSum),
+        duration: const Duration(seconds: 2),
+        builder: (context, value, child) {
+          return PieChart(
+            PieChartData(
+              sections: [
+                PieChartSectionData(
+                  value: value,
+                  title: 'Income\n${value.toStringAsFixed(2)}',
+                  color: Colors.green,
+                  radius: 100,
+                  titleStyle: const TextStyle(
+                    fontFamily: 'DynaPuff',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                PieChartSectionData(
+                  value: expenseSum,
+                  title: 'Expenses\n-${expenseSum.toStringAsFixed(2)}',
+                  color: Colors.red,
+                  radius: 100,
+                  titleStyle: const TextStyle(
+                    fontFamily: 'DynaPuff',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+              centerSpaceRadius: 50,
+              borderData: FlBorderData(show: false),
             ),
-            PieChartSectionData(
-              value: expenseSum,
-              title: 'Expenses\n-${expenseSum.toStringAsFixed(2)}',
-              color: Colors.red,
-              radius: 100,
-              titleStyle: const TextStyle(
-                fontFamily: 'DynaPuff',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ],
-          centerSpaceRadius: 50,
-          borderData: FlBorderData(show: false),
-        ),
+          );
+        },
       ),
     );
   }

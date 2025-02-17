@@ -51,22 +51,22 @@ class _DetailPageState extends State<DetailPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Center(
-            child: const Text(
-              'Transaction Details',
+            child: AnimatedDefaultTextStyle(
               style: TextStyle(
                 fontFamily: 'DynaPuff',
                 fontWeight: FontWeight.bold,
                 fontSize: 24,
                 color: Colors.white,
               ),
+              duration: const Duration(milliseconds: 300),
+              child: const Text('Transaction Details'),
             ),
           ),
           backgroundColor: Colors.deepPurple,
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
               _buildDetailRow('Amount:', displayAmount, amountColor),
               const SizedBox(height: 10),
@@ -83,32 +83,39 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Widget _buildDetailRow(String label, String value, Color valueColor) {
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            Text(
-              '$label ',
-              style: TextStyle(
-                fontFamily: 'DynaPuff',
-                fontSize: 16,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                value,
+    return AnimatedSwitcher(
+      duration: const Duration(seconds: 1),
+      child: Card(
+        key: ValueKey<String>(value),
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Text(
+                '$label ',
                 style: TextStyle(
                   fontFamily: 'DynaPuff',
                   fontSize: 16,
-                  color: valueColor,
                 ),
-                overflow: TextOverflow.ellipsis,
               ),
-            ),
-          ],
+              Expanded(
+                child: AnimatedDefaultTextStyle(
+                  style: TextStyle(
+                    fontFamily: 'DynaPuff',
+                    fontSize: 16,
+                    color: valueColor,
+                  ),
+                  duration: const Duration(milliseconds: 300),
+                  child: Text(
+                    value,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

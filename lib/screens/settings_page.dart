@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_flutter/helpers/theme_helper.dart';
+import 'package:project_flutter/screens/change_password_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_flutter/widgets/bottom_navigation.dart';
 
@@ -60,14 +61,15 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Center(
-            child: const Text(
-              'Settings',
+            child: AnimatedDefaultTextStyle(
               style: TextStyle(
                 fontFamily: 'DynaPuff',
                 fontWeight: FontWeight.bold,
                 fontSize: 24,
                 color: Colors.white,
               ),
+              duration: const Duration(milliseconds: 300),
+              child: const Text('Settings'),
             ),
           ),
           backgroundColor: Colors.deepPurple,
@@ -100,7 +102,18 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: "Change Password",
                       icon: Icons.lock_outline,
                       onTap: () {
-                        Navigator.pushNamed(context, '/changepassword');
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: const ChangePasswordPage(),
+                              );
+                            },
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -148,14 +161,18 @@ class _CustomListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        title,
-        style: TextStyle(fontFamily: 'DynaPuff'),
+    return AnimatedSwitcher(
+      duration: const Duration(seconds: 1),
+      child: ListTile(
+        key: ValueKey<String>(title),
+        title: Text(
+          title,
+          style: TextStyle(fontFamily: 'DynaPuff'),
+        ),
+        leading: Icon(icon),
+        trailing: trailing,
+        onTap: onTap ?? () {},
       ),
-      leading: Icon(icon),
-      trailing: trailing,
-      onTap: onTap ?? () {},
     );
   }
 }

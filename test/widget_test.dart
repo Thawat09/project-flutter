@@ -10,8 +10,9 @@ void main() {
     expect(find.byType(TextField), findsNWidgets(2));
     expect(find.text('Login'), findsOneWidget);
 
-    await tester.enterText(find.byType(TextField).first, 'test@example.com');
-    await tester.enterText(find.byType(TextField).last, 'P@ssw0rd');
+    await tester.enterText(
+        find.byType(TextField).first, 'test@example.com'); // Email
+    await tester.enterText(find.byType(TextField).last, 'P@ssw0rd'); // Password
     await tester.tap(find.text('Login'));
     await tester.pump();
   });

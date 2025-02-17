@@ -52,9 +52,7 @@ class _EditPageState extends State<EditPage> {
         setState(() {
           _amountController.text = data['amount'].toString();
           _categoryController.text = data['category'];
-          _selectedDate = (data['timestamp'] as Timestamp)
-              .toDate()
-              .toUtc();
+          _selectedDate = (data['timestamp'] as Timestamp).toDate().toUtc();
           _transactionType = data['type'];
           _selectedTime = TimeOfDay.fromDateTime(_selectedDate);
         });
@@ -182,73 +180,73 @@ class _EditPageState extends State<EditPage> {
               ? const Center(child: CircularProgressIndicator())
               : Column(
                   children: [
-                    TextField(
-                      controller: _amountController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'Amount',
-                        labelStyle: TextStyle(
-                          fontFamily: 'DynaPuff',
-                          fontSize: 16,
+                    AnimatedOpacity(
+                      opacity: _isLoading ? 0.5 : 1.0,
+                      duration: const Duration(milliseconds: 300),
+                      child: TextField(
+                        controller: _amountController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          labelText: 'Amount',
+                          labelStyle: TextStyle(
+                            fontFamily: 'DynaPuff',
+                            fontSize: 16,
+                          ),
                         ),
+                        onChanged: (value) => _checkFormValidity(),
                       ),
-                      onChanged: (value) => _checkFormValidity(),
                     ),
                     const SizedBox(height: 10),
-                    TextField(
-                      controller: _categoryController,
-                      decoration: const InputDecoration(
-                        labelText: 'Category',
-                        labelStyle: TextStyle(
-                          fontFamily: 'DynaPuff',
-                          fontSize: 16,
+                    AnimatedOpacity(
+                      opacity: _isLoading ? 0.5 : 1.0,
+                      duration: const Duration(milliseconds: 300),
+                      child: TextField(
+                        controller: _categoryController,
+                        decoration: const InputDecoration(
+                          labelText: 'Category',
+                          labelStyle: TextStyle(
+                            fontFamily: 'DynaPuff',
+                            fontSize: 16,
+                          ),
                         ),
+                        onChanged: (value) => _checkFormValidity(),
                       ),
-                      onChanged: (value) => _checkFormValidity(),
                     ),
                     const SizedBox(height: 40),
-                    DropdownButtonFormField<String>(
-                      value: _transactionType,
-                      decoration: const InputDecoration(
-                        labelText: 'Transaction Type',
-                        labelStyle: TextStyle(
-                          fontFamily: 'DynaPuff',
-                          fontSize: 16,
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: DropdownButtonFormField<String>(
+                        key: ValueKey(_transactionType),
+                        value: _transactionType,
+                        decoration: const InputDecoration(
+                          labelText: 'Transaction Type',
+                          labelStyle: TextStyle(
+                            fontFamily: 'DynaPuff',
+                            fontSize: 16,
+                          ),
+                          border: OutlineInputBorder(),
                         ),
-                        border: OutlineInputBorder(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _transactionType = newValue;
+                          });
+                        },
+                        items: <String>['income', 'expense']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child:
+                                Text(value == 'income' ? 'Income' : 'Expense'),
+                          );
+                        }).toList(),
                       ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _transactionType = newValue;
-                        });
-                      },
-                      items: <String>['income', 'expense']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value == 'income' ? 'Income' : 'Expense'),
-                        );
-                      }).toList(),
                     ),
                     const SizedBox(height: 40),
                     Row(
                       children: [
                         Expanded(
                           flex: 1,
-                          child: TextFormField(
-                            readOnly: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Date',
-                              labelStyle: TextStyle(
-                                fontFamily: 'DynaPuff',
-                                fontSize: 16,
-                              ),
-                              border: OutlineInputBorder(),
-                            ),
-                            controller: TextEditingController(
-                              text: DateFormat('yyyy-MM-dd')
-                                  .format(_selectedDate),
-                            ),
+                          child: GestureDetector(
                             onTap: () async {
                               DateTime? pickedDate = await showDatePicker(
                                 context: context,
@@ -262,42 +260,70 @@ class _EditPageState extends State<EditPage> {
                                 });
                               }
                             },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.deepPurple,
+                                ),
+                              ),
+                              child: Text(
+                                DateFormat('yyyy-MM-dd').format(_selectedDate),
+                                style: const TextStyle(
+                                  fontFamily: 'DynaPuff',
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           flex: 1,
-                          child: TextFormField(
-                            readOnly: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Time',
-                              labelStyle: TextStyle(
-                                fontFamily: 'DynaPuff',
-                                fontSize: 16,
-                              ),
-                              border: OutlineInputBorder(),
-                            ),
-                            controller: TextEditingController(
-                              text: _selectedTime.format(context),
-                            ),
+                          child: GestureDetector(
                             onTap: _selectTime,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.deepPurple,
+                                ),
+                              ),
+                              child: Text(
+                                _selectedTime.format(context),
+                                style: const TextStyle(
+                                  fontFamily: 'DynaPuff',
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 40),
-                    ElevatedButton(
-                      onPressed: _isFormValid ? _updateTransaction : null,
-                      child: _isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text(
-                              'Update Transaction',
-                              style: TextStyle(
-                                fontFamily: 'DynaPuff',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                    AnimatedScale(
+                      duration: const Duration(milliseconds: 300),
+                      scale: _isLoading ? 0.95 : 1.0,
+                      child: ElevatedButton(
+                        onPressed: _isFormValid ? _updateTransaction : null,
+                        child: _isLoading
+                            ? const CircularProgressIndicator()
+                            : const Text(
+                                'Update Transaction',
+                                style: TextStyle(
+                                  fontFamily: 'DynaPuff',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
+                      ),
                     ),
                   ],
                 ),
