@@ -94,7 +94,9 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               ),
             );
             Future.delayed(const Duration(seconds: 1), () {
-              Navigator.pushReplacementNamed(context, '/settings');
+              if (mounted) {
+                Navigator.pushReplacementNamed(context, '/settings');
+              }
             });
           }
         }

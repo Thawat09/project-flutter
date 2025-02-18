@@ -52,7 +52,7 @@ class RouteGenerator {
             endDate: endDate,
           ),
         );
-      case '/login':
+      case '/':
         return MaterialPageRoute(
           builder: (_) => const LoginPage(),
         );

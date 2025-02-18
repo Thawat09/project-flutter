@@ -232,7 +232,7 @@ class RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/login');
+                        Navigator.pushNamed(context, '/');
                       },
                       child: const Text(
                         'Already have an account? Login',

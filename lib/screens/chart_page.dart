@@ -17,10 +17,10 @@ class ChartPage extends StatefulWidget {
   });
 
   @override
-  _ChartPageState createState() => _ChartPageState();
+  ChartPageState createState() => ChartPageState();
 }
 
-class _ChartPageState extends State<ChartPage> {
+class ChartPageState extends State<ChartPage> {
   late double incomeSum;
   late double expenseSum;
   bool _isDarkMode = false;
@@ -43,7 +43,7 @@ class _ChartPageState extends State<ChartPage> {
     incomeSum = 0;
     expenseSum = 0;
     for (var transaction in widget.transactions) {
-      double amount = transaction['amount'];
+      double amount = (transaction['amount'] as num).toDouble();
       String type = transaction['type'];
       if (type == 'income') {
         incomeSum += amount;
@@ -87,7 +87,7 @@ class _ChartPageState extends State<ChartPage> {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 8,
                         spreadRadius: 4,
                       ),

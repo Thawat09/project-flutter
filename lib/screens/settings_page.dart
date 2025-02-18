@@ -127,11 +127,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       icon: Icons.exit_to_app_rounded,
                       onTap: () async {
                         await FirebaseAuth.instance.signOut();
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/login',
-                          (route) => false,
-                        );
+                        if (context.mounted) {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/',
+                            (route) => false,
+                          );
+                        }
                       },
                     ),
                   ],

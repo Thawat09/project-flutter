@@ -1,0 +1,2 @@
+D:/Thawat/code/homework/mobile/project_flutter/android/app/.cxx/Debug/2w40482z/x86/CMakeFiles/edit_cache.dir
+D:/Thawat/code/homework/mobile/project_flutter/android/app/.cxx/Debug/2w40482z/x86/CMakeFiles/rebuild_cache.dir

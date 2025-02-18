@@ -118,7 +118,12 @@ class _DashboardPageState extends State<DashboardPage> {
         transactions = snapshot.docs;
       });
     } catch (e) {
-      print('Error applying filter: $e');
+      FlutterError.reportError(FlutterErrorDetails(
+        exception: e,
+        stack: StackTrace.current,
+        library: 'app',
+        context: ErrorDescription('Error applying filter'),
+      ));
     }
   }
 
@@ -189,7 +194,7 @@ class _DashboardPageState extends State<DashboardPage> {
             double expenseSum = 0;
 
             for (var transaction in transactions) {
-              double amount = transaction['amount'];
+              double amount = (transaction['amount'] as num).toDouble();
               String type = transaction['type'];
 
               if (type == 'income') {
@@ -272,8 +277,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                      height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -337,7 +341,7 @@ class _DashboardPageState extends State<DashboardPage> {
           firstDate: DateTime(2000),
           lastDate: DateTime(2101),
         );
-        if (pickedDate != null) {
+        if (pickedDate != null && mounted) {
           TimeOfDay? pickedTime = await showTimePicker(
             context: context,
             initialTime: TimeOfDay.fromDateTime(date),
@@ -374,7 +378,7 @@ class _DashboardPageState extends State<DashboardPage> {
         itemCount: transactions.length,
         itemBuilder: (context, index) {
           final transaction = transactions[index];
-          final double amount = transaction['amount'];
+          final double amount = (transaction['amount'] as num).toDouble();
           final String category = transaction['category'];
           final String type = transaction['type'];
           final String transactionId = transaction.id;
